@@ -1,53 +1,46 @@
-const {createApp} = Vue
+const { createApp } = Vue
 
-createApp({
-    data(){
-        return{
-            productos: [],
-            url: 'http://4li3ntr3x.pythonanywhere.com/productos',
-            cargando: true,
-            error: false
-        }
+  createApp({
+    data() {
+      return {
+        url:"http://4li3ntr3x.pythonanywhere.com/productos",
+        productos:[],
+        error:false,
+        cargando:true
+      }
     },
-
-    methods:{
-        fetchData(){
-            fetch(this.url)
-            .then(response => response.json())
-            .then(data => {
-                this.productos = data;
-                this.cargando = false;
-
-            })
-            .catch(err => {
-                console.error(err);
-                this.error = true;
-
-            })
-        },
-
-        eliminar(id){
-            const url = 'http://4li3ntr3x.pythonanywhere.com/productos/'+id;
-            let options = {
-                method: 'DELETE',    
-            }
-
-            fetch(url, options)
+    created() {
+        this.fetchData(this.url)
+    },
+    methods: {
+        fetchData(url) {
+            fetch(url)
                 .then(response => response.json())
-                .then(response => {
+                .then(data => {
+                    this.productos = data;
+                    this.cargando=false
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.error=true              
+                })
+        },
+        eliminar(producto) {
+            const url = 'http://4li3ntr3x.pythonanywhere.com/productos/' + producto;
+            var options = {
+                method: 'DELETE',
+            }
+            fetch(url, options)
+                .then(res => res.text()) // or res.json()
+                .then(res => {
                     location.reload();
-            })
-            
+                })
         }
 
+
     },
-
     
 
-    created(){
-        this.fetchData(this.url);
 
-    }
-    
 
-}).mount('#app')
+  }).mount('#app')
