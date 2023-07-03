@@ -45,7 +45,7 @@ productos_schema=ProductoSchema(many=True)  # El objeto productos_schema es para
 def get_Productos():
     all_productos=Producto.query.all()         # el metodo query.all() lo hereda de db.Model
     result=productos_schema.dump(all_productos)  # el metodo dump() lo hereda de ma.schema y
-                                                 # trae todos los registros de la tabla
+                                                # trae todos los registros de la tabla
     return jsonify(result)                       # retorna un JSON de todos los registros de la tabla
 
 @app.route('/productos/<id>',methods=['GET'])
@@ -77,7 +77,7 @@ def create_producto():
 @app.route('/productos/<id>' ,methods=['PUT'])
 def update_producto(id):
     producto=Producto.query.get(id)
- 
+
     nombre=request.json['nombre']
     precio=request.json['precio']
     stock=request.json['stock']
@@ -92,7 +92,7 @@ def update_producto(id):
 
     db.session.commit()
     return producto_schema.jsonify(producto)
- 
+
 # programa principal *******************************
 if __name__=='__main__':  
     app.run(debug=True, port=5000)    # ejecuta el servidor Flask en el puerto 5000
